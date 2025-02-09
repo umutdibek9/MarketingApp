@@ -56,7 +56,7 @@ namespace UnitTest.Test
 
        
         [Fact]
-        public async Task getTestCase()
+        public async Task getAllTestCase()
         {
             var orders = new List<Order.API.Models.Order>
         {
