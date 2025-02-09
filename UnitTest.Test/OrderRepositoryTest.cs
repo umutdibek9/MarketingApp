@@ -40,11 +40,11 @@ namespace UnitTest.Test
             var order = new Order.API.Models.Order
             {
                 Id = 1,
-                BuyerId = "Buyer1",
+                BuyerId = "1",
                 OrderStatus = OrderStatus.Suspend,
                 Items = new List<OrderItem>
                 {
-                    new OrderItem { ProductId = 101, Count = 2, Price = 10}
+                    new OrderItem { ProductId = 1, Count = 2, Price = 10}
                 }
             };
 
