@@ -11,5 +11,6 @@ namespace Shared
         public int ProductId { get; set; }
         public int Count { get; set; }
         public string Address { get; set; }
+   
     }
 }

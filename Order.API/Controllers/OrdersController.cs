@@ -1,8 +1,10 @@
-﻿using MassTransit;
+﻿using AutoMapper;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Order.API.DTOs;
 using Order.API.Models;
+using Order.API.Repositories;
 using Shared;
 
 namespace Order.API.Controllers
@@ -13,10 +15,14 @@ namespace Order.API.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IPublishEndpoint _publishEndpoint;
-        public OrdersController(AppDbContext context,IPublishEndpoint publishEndpoint)
+        private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
+        public OrdersController(AppDbContext context,IPublishEndpoint publishEndpoint, IOrderRepository orderRepository, IMapper mapper)
         {
             _context = context;
             _publishEndpoint = publishEndpoint;
+            _orderRepository = orderRepository;
+            _mapper = mapper;
         }
         [HttpPost]
         public async Task<IActionResult> Create(OrderCreateDto orderCreate)
@@ -34,8 +40,8 @@ namespace Order.API.Controllers
                 newOrder.Items.Add(new OrderItem() { Price = item.Price, ProductId = item.ProductId, Count = item.Count });
             });
 
-            await _context.AddAsync(newOrder);
-            await _context.SaveChangesAsync();
+            await _orderRepository.CreateAsync(newOrder);
+
             var orderCreatedEvent = new OrderCreatedEvent()
             {
                 Address =orderCreate.Address.Region,
